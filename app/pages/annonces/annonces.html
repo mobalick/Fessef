@@ -1,0 +1,68 @@
+<!--
+  Generated template for the AnnoncesPage page.
+
+  See http://ionicframework.com/docs/v2/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-navbar *navbar hideBackButton>
+
+  <button menuToggle>
+    <ion-icon name='menu'></ion-icon>
+  </button>
+
+  <ion-title>
+    Annonces
+  </ion-title>
+
+
+</ion-navbar>
+
+<ion-content padding class="annonces">
+  <div [ngSwitch]="action">
+        <form *ngSwitchWhen="'create'" [ngFormModel]="createForm" (ngSubmit)="create(createForm.value)">
+          <input type="hidden" [(ngFormControl)]="createForm.controls['id']" />
+          <ion-item>
+            <ion-label floating>type</ion-label>
+            <ion-select [(ngFormControl)]="createForm.controls['type']" >
+              <ion-option value="Collocation" >Collocation</ion-option>
+              <ion-option value="Recherche" >Recherche</ion-option>
+              <ion-option value="vente" >vente</ion-option>
+            </ion-select>
+          </ion-item>
+          
+          <ion-item>
+            <ion-label floating>Titre</ion-label>
+            <ion-input type="text" [(ngFormControl)]="createForm.controls['title']"></ion-input>
+          </ion-item>
+
+          <ion-item>
+            <ion-label floating>Description</ion-label>
+            <ion-textarea  [(ngFormControl)]="createForm.controls['description']"></ion-textarea >
+          </ion-item>
+
+          <div padding>
+            <button  type="button" (click)="cancel()" >Annuler</button> 
+            <button  type="submit">Enregistrer</button>        
+          </div>
+        </form>
+
+        <ion-list *ngSwitchWhen="'list'">
+          <ion-item-sliding  *ngFor="let item of annonces" >
+            <button ion-item (click)="edit(item)">
+              <ion-item-content>
+                <h2>{{item.title}}</h2>
+                <p>{{item.description | truncate: 40}}</p>
+              </ion-item-content>
+            </button>
+      
+            <ion-item-options>
+              <button danger (click)="removeNote(item)"><ion-icon name="trash"></ion-icon> Delete</button>
+            </ion-item-options>
+          </ion-item-sliding>
+          <button class="button button-float" (click)="add()">
+            <ion-icon name="add"></ion-icon>
+          </button>
+        </ion-list>
+  </div>
+</ion-content>
+
