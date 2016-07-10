@@ -3,6 +3,9 @@ import {NavController} from 'ionic-angular';
 import {Truncate} from '../../pipes/truncate';
 import {AnnonceService, Annonce} from '../../providers/annonce-service/annonce-service';
 import {FormBuilder, Validators, AbstractControl, ControlGroup } from '@angular/common';
+import {UserService, User} from '../../providers/user-service/user-service';
+
+
 /*
   Generated class for the AnnoncesPage page.
 
@@ -19,7 +22,7 @@ export class AnnoncesPage {
   private annonces;
   private action;
   private createForm;
-  constructor(public nav: NavController,  public formBuilder : FormBuilder, public annonceService : AnnonceService) {
+  constructor(public nav: NavController,  public formBuilder : FormBuilder, public annonceService : AnnonceService, public userService : UserService) {
     this.action="list";
     
     this.refreshList();
@@ -54,8 +57,8 @@ export class AnnoncesPage {
   public create(annonce :Annonce)
   {
     //annonce.creationDate = new Date();
-    annonce.userId = this.nav.user.id;
-    annonce.userMail = this.nav.user.mail;
+    annonce.userId = this.userService.user.id;
+    annonce.userMail = this.userService.user.email;
 
     console.log(annonce)
     

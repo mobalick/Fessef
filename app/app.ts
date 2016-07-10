@@ -6,7 +6,9 @@ import {InfoPage} from './pages/info/info';
 import {AnnoncesPage} from './pages/annonces/annonces';
 import {AgendaPage} from './pages/agenda/agenda';
 import {LoginPage} from './pages/login/login';
-
+import { FIREBASE_PROVIDERS, defaultFirebase, FirebaseAuth, firebaseAuthConfig, AuthMethods, AuthProviders} from 'angularfire2';
+import {UserService, User} from './providers/user-service/user-service';
+import {NotificationService} from './providers/notification-service/notification-service';
 
 @Component({
   template: `
@@ -48,7 +50,7 @@ import {LoginPage} from './pages/login/login';
     <ion-nav id="nav" #content [root]="rootPage"></ion-nav>`
 })
 export class MyApp {
-  rootPage: any = HomePage;
+  rootPage: any = this.userService.IsAuthorized()? HomePage : LoginPage;
 
   private homePage      = HomePage;
   private infoPage      = InfoPage;
@@ -57,7 +59,7 @@ export class MyApp {
   private loginPage     = LoginPage;
 
 
-  constructor(platform: Platform, private menu: MenuController) {
+  constructor(platform: Platform, private menu: MenuController, private userService:UserService) {
     platform.ready().then(() => {
       // Okay, so the platform is ready and our plugins are available.
       // Here you can do any higher level native things you might need.
@@ -75,4 +77,16 @@ export class MyApp {
   }
 }
 
-ionicBootstrap(MyApp);
+ionicBootstrap(MyApp, [UserService, FIREBASE_PROVIDERS,NotificationService,  
+                                                                      defaultFirebase({
+                                                                          apiKey: "AIzaSyDKwqN0kP3YjW_meRkB04PWzQy8IGdG3iM",
+                                                                          authDomain: "fessef-9386f.firebaseapp.com",
+                                                                          databaseURL: "https://fessef-9386f.firebaseio.com",
+                                                                          storageBucket: "fessef-9386f.appspot.com",
+                                                                        }),
+                                                                      firebaseAuthConfig({
+                                                                        provider: AuthProviders.Password,
+                                                                        method: AuthMethods.Password
+                                                                      })
+                       
+                      ]);

@@ -26,7 +26,7 @@
           </ion-item>
           <ion-item>
             <ion-label>Mail</ion-label>
-            <ion-input type="text" ngControl="mail"></ion-input>
+            <ion-input type="text" ngControl="email"></ion-input>
           </ion-item>
 
           <ion-item>
@@ -67,9 +67,9 @@
 
           <ion-item>
             <ion-label floating>Mail</ion-label>
-            <ion-input type="email"  [ngFormControl]="signupForm.controls['mail']"></ion-input>
+            <ion-input type="email"  [ngFormControl]="signupForm.controls['email']"></ion-input>
           </ion-item>
-          <ion-item *ngIf="!signupForm.controls.mail.valid  && (submitAttempt || signupForm.controls.mail.touched)"  >
+          <ion-item *ngIf="!signupForm.controls.email.valid  && (submitAttempt || signupForm.controls.email.touched)"  >
             <p class="invalid">Please enter a valid mail.</p>
           </ion-item>
 

@@ -12,22 +12,23 @@ export class HomePage {
   public user:User;
   constructor(private _navController: NavController, public userService:UserService) {
     
+      console.log("hello");
     
     
-    this.userService.get(1).then(users => {
+    // this.userService.get(1).then(users => {
 
-      this.user = users === '' ? null : users.res.rows[0];
+    //   this.user = users.res.rows.length == 0 ? null : users.res.rows[0];
       
-      console.log(this.user);
+    //   console.log(this.user);
 
-      _navController.user=this.user;
+    //   _navController.user=this.user;
 
 
-      if (this.user==null || this.user.isLogedIn+''=='false') {
-        this._navController.push(LoginPage);
-      }
+    //   if (this.user==null || this.user.isLogedIn+''=='false') {
+    //     this._navController.push(LoginPage);
+    //   }
      
-    });
+    // });
   }
 
   /*

@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {Storage, SqlStorage} from 'ionic-angular';
 import {Http} from '@angular/http';
 import 'rxjs/add/operator/map';
-
+import {NotificationService} from '../../providers/notification-service/notification-service';
 
 
 export class Annonce {

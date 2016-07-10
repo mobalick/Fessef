@@ -1,9 +1,10 @@
 import {Component } from '@angular/core';
-import {NavController} from 'ionic-angular';
+import {NavController, LocalStorage, Storage} from 'ionic-angular';
 import {FormBuilder, Validators, AbstractControl, ControlGroup } from '@angular/common';
-import {UserService} from '../../providers/user-service/user-service';
+import {UserService, User} from '../../providers/user-service/user-service';
+import {NotificationService} from '../../providers/notification-service/notification-service';
 import {HomePage} from '../home/home';
-import {User} from '../../providers/user-service/user-service';
+import {FIREBASE_PROVIDERS, defaultFirebase,AngularFire, FirebaseAuth } from 'angularfire2';
 
 /*
   Generated class for the LoginPage page.
@@ -12,9 +13,9 @@ import {User} from '../../providers/user-service/user-service';
   Ionic pages and navigation.
 */
 @Component({
-  templateUrl: 'build/pages/login/login.html',
-  providers : [UserService]
-})
+  templateUrl: 'build/pages/login/login.html'
+ })
+
 export class LoginPage {
   public authType;
   public isAuthorized;
@@ -23,32 +24,29 @@ export class LoginPage {
   public user : User;
   public submitAttempt;
   public isLoginIncorrect;
-  constructor(public nav: NavController, public userService : UserService, public formBuilder : FormBuilder) {
+  public storage = new Storage(LocalStorage);
+
+  constructor(public nav: NavController, public userService : UserService, 
+              public formBuilder : FormBuilder, public notif : NotificationService,
+              public auth : FirebaseAuth ) {
     
-    this.authType = 'signup';  
+    this.authType         = 'login';  
     this.isLoginIncorrect = false;
-    this.submitAttempt=false;
+    this.submitAttempt    =false;
 
-    this.userService.get(1).then(users => {
-
-      this.user = users === '' ? null : users.res.rows[0];
-      this.isAuthorized = this.user != null && this.user.isLogedIn+''=='true';
-     
-    });
-
-   
-
-
-    this.loginForm = formBuilder.group({
-      'mail': ['', Validators.required],
+    this.user             = this.userService.user;
+    this.isAuthorized     =this.userService.IsAuthorized();
+    
+    this.loginForm        = formBuilder.group({
+      'email': ['', Validators.required],
       'password': ['', Validators.required]
     });
 
-     this.signupForm = formBuilder.group({
+     this.signupForm      = formBuilder.group({
       'name'    : ['', Validators.required],
       'lastName': ['', Validators.required],
       'sex'     : ['m', Validators.required],
-      'mail'    : ['', Validators.required],
+      'email'   : ['', Validators.required],
       'school'  : ['', Validators.required],
       'city'    : ['', Validators.required],
       'dob'     : ['', Validators.required],
@@ -61,37 +59,46 @@ export class LoginPage {
   public login(login)
   {
     console.log("call from login");
+    
+    this.notif.showLoading(this.nav);
+    
+    this.userService.login(login).then((authData)=>{
+       this.notif.closeLoading();
+       
+      this.userService.get(authData.uid).subscribe(user =>{
+        this.userService.user             = user;
+        this.userService.user.isLogedIn   = true;
+        this.isAuthorized                 = true;
+        this.user                         = this.userService.user;
 
-     this.userService.get(1).then(users => {
-      this.user = users === '' ? null : users.res.rows[0];
-      if (this.user!=null) {
-        if (this.user.mail==login.mail && this.user.password==login.password) {
-            this.user.isLogedIn   = true;
-            this.isAuthorized     = true;
-            this.userService.update(this.user);
-            this.nav.push(HomePage);
-        }else{
-            this.isLoginIncorrect = true;
-        }
-      }
-    });
-
+        this.storage.set('user', JSON.stringify(user));
+        
+        this.nav.setRoot(HomePage);
+      });
+        
+    }).catch((error)=>{
+      this.notif.showError(error,this.nav);
+      this.isLoginIncorrect   = true;
+    })
   }
 
   public logout()
   {
 
     console.log("call from logout");
+    this.userService.logout();
+    this.isAuthorized=false;
+    this.authType = 'login'; 
 
-    this.userService.get(1).then(users => {
-      this.user = users === '' ? null : users.res.rows[0];
-      if (this.user!=null) {
-        this.user.isLogedIn=false;
-        this.isAuthorized=false;
-        this.authType = 'login'; 
-        this.userService.update(this.user);
-      }
-    });
+    // this.userService.get(1).then(users => {
+    //   this.user =users.res.rows.length == 0 ? null : users.res.rows[0];
+    //   if (this.user!=null) {
+    //     this.user.isLogedIn=false;
+    //     this.isAuthorized=false;
+    //     this.authType = 'login'; 
+    //     this.userService.update(this.user);
+    //   }
+    // });
   }
 
   public signup(user:User)
@@ -100,9 +107,26 @@ export class LoginPage {
 
     if (this.signupForm.valid) {
       user.isLogedIn=false;
-     // user.dob=new Date(user.dob);
-      this.userService.save(user);
-      this.authType = 'login';
+
+      this.notif.showLoading(this.nav);
+
+      this.userService.create(user).then((authdata)=>{
+        console.log("create ok"+authdata);
+        this.notif.closeLoading();
+        this.authType = 'login';
+       
+       //Save the object
+       user.uid = authdata.uid;
+       this.userService.save(user);
+
+
+      }).catch((error)=>{
+        console.log(error);
+        this.notif.showError(error.message,this.nav);
+        this.authType = 'signup';
+      });
+      
+      
     }
     else
     {
