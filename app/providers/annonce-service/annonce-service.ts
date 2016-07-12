@@ -10,12 +10,12 @@ export class Annonce {
   type:string;  
   description: string;
   id: number;
-  userId:number;
+  userId:string;
   creationDate: Date;
   modificationDate:Date;
   userMail:string;
-
-  constructor(id:number, type: string, title: string, description: string,userId:number , creationDate: Date, modificationDate:Date, userMail:string) {
+  $key : string;
+  constructor(id:number, type: string, title: string, description: string,userId:string , creationDate: Date, modificationDate:Date, userMail:string, $key : string) {
     this.title = title;
     this.type = type;
     this.description = description;
@@ -24,6 +24,7 @@ export class Annonce {
     this.userMail=userMail;
     this.creationDate=creationDate;
     this.modificationDate=modificationDate;
+    this.$key=$key;
   }
 }
 

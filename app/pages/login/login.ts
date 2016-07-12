@@ -71,7 +71,7 @@ export class LoginPage {
         this.isAuthorized                 = true;
         this.user                         = this.userService.user;
 
-        this.storage.set('user', JSON.stringify(user));
+        this.storage.setJson('user', user);
         
         this.nav.setRoot(HomePage);
       });
@@ -89,16 +89,6 @@ export class LoginPage {
     this.userService.logout();
     this.isAuthorized=false;
     this.authType = 'login'; 
-
-    // this.userService.get(1).then(users => {
-    //   this.user =users.res.rows.length == 0 ? null : users.res.rows[0];
-    //   if (this.user!=null) {
-    //     this.user.isLogedIn=false;
-    //     this.isAuthorized=false;
-    //     this.authType = 'login'; 
-    //     this.userService.update(this.user);
-    //   }
-    // });
   }
 
   public signup(user:User)

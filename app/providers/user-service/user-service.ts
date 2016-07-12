@@ -50,11 +50,13 @@ export class UserService {
   
   public IsAuthorized(){
      if (this.user == null) {
-      //   var str = this.storage.get('user').then((value) => {
-      //               return value;
-      //             });
 
-      //  this.user = JSON.parse(str);
+      this.user = JSON.parse(window.localStorage.getItem("user"));
+
+      //Si un user est trouvé connecté il faut le connecter a firebase
+      if (this.user!=null && this.user.isLogedIn) {
+        this.login(this.user);
+      }
      }
 
     return this.user!=null && this.user.isLogedIn;
@@ -80,12 +82,16 @@ export class UserService {
     const itemObservable = this.af.database.object('/user/'+user.uid);
     itemObservable.set(user);
     this.user = user;
+
+    this.storage.setJson('user', user);
+
     //  let sql = 'INSERT INTO user (name, lastName, sex, mail, city, dob, school, isLogedIn, password) VALUES (?,?,?,?,?,?,?,?,?)';
     //  var result = this.storage.query(sql, [user.name, user.lastName, user.sex, user.email, user.city, user.dob, user.school, user.isLogedIn, user.password]);
     //  return result;
   }
  
   // Update an existing note with a given ID
+  
   public update(user: User) {
     
      let sql = 'UPDATE user SET name = \"' + user.name + '\", lastName = \"' + user.lastName +'\", school = \"' + user.school + 

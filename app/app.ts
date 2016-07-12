@@ -6,7 +6,7 @@ import {InfoPage} from './pages/info/info';
 import {AnnoncesPage} from './pages/annonces/annonces';
 import {AgendaPage} from './pages/agenda/agenda';
 import {LoginPage} from './pages/login/login';
-import { FIREBASE_PROVIDERS, defaultFirebase, FirebaseAuth, firebaseAuthConfig, AuthMethods, AuthProviders} from 'angularfire2';
+import { FIREBASE_PROVIDERS, defaultFirebase, FirebaseAuth, firebaseAuthConfig, AuthMethods, AuthProviders,AngularFire} from 'angularfire2';
 import {UserService, User} from './providers/user-service/user-service';
 import {NotificationService} from './providers/notification-service/notification-service';
 
@@ -77,7 +77,7 @@ export class MyApp {
   }
 }
 
-ionicBootstrap(MyApp, [UserService, FIREBASE_PROVIDERS,NotificationService,  
+ionicBootstrap(MyApp, [UserService, FIREBASE_PROVIDERS,NotificationService,  AngularFire,
                                                                       defaultFirebase({
                                                                           apiKey: "AIzaSyDKwqN0kP3YjW_meRkB04PWzQy8IGdG3iM",
                                                                           authDomain: "fessef-9386f.firebaseapp.com",
