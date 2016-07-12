@@ -5,6 +5,8 @@ import {AnnonceService, Annonce} from '../../providers/annonce-service/annonce-s
 import {FormBuilder, Validators, AbstractControl, ControlGroup } from '@angular/common';
 import {UserService, User} from '../../providers/user-service/user-service';
 import { AngularFire, FirebaseListObservable, FirebaseAuth} from 'angularfire2';
+import {AnnonceDetailPage} from '../annonce-detail/annonce-detail';
+
 
 /*
   Generated class for the AnnoncesPage page.
@@ -19,79 +21,88 @@ import { AngularFire, FirebaseListObservable, FirebaseAuth} from 'angularfire2';
 })
 
 export class AnnoncesPage {
-  private annonces : FirebaseListObservable<Annonce[]>;
-  private action;
-  private createForm;
-  private userImage;
+    private annonces : FirebaseListObservable<Annonce[]>;
+    private action;
+    private createForm;
+    private userImage;
+    private annonce : Annonce;
+    private submitAttempt;
+    
+    constructor(public nav: NavController, public formBuilder: FormBuilder,public auth : FirebaseAuth,
+                public annonceService: AnnonceService, public userService: UserService, public af : AngularFire) {
+        this.action = "list";
 
-  constructor(public nav: NavController, public formBuilder: FormBuilder,public auth : FirebaseAuth,
-              public annonceService: AnnonceService, public userService: UserService, public af : AngularFire) {
-    this.action = "list";
-
-    //this.refreshList();
-     this.annonces = this.af.database.list('/annonces');
+        //this.refreshList();
+        this.annonces = this.af.database.list('/annonces');
 
 
-  }
-
-  public refreshList() {
-    // this.annonceService.getAll().then(ans => {
-    //   this.annonces = ans === '' ? null : ans.res.rows;
-    // });
-  }
-
-  public add() {
-    this.createForm = this.formBuilder.group({
-      'id': ['', Validators.required],
-      'type': ['', Validators.required],
-      'title': ['', Validators.required],
-      'description': ['', Validators.required]
-    });
-
-    this.action = "create";
-  }
-
-  public cancel() {
-    this.action = "list";
-  }
-
-  public create(annonce: Annonce) {
-    //annonce.creationDate = new Date();
-    annonce.userId = this.userService.user.uid;
-    annonce.userMail = this.userService.user.email;
-
-    console.log(annonce)
-
-    //this.annonceService.save(annonce);
-
-    if (!annonce.id) {
-      this.annonces.push(annonce); 
     }
-    else
+
+    public refreshList() {
+        // this.annonceService.getAll().then(ans => {
+        //   this.annonces = ans === '' ? null : ans.res.rows;
+        // });
+    }
+
+    public add() {
+        this.createForm = this.formBuilder.group({
+        'id': [''],
+        'type': ['', Validators.required],
+        'title': ['', Validators.required],
+        'description': ['', Validators.required]
+        });
+
+        this.action = "create";
+    }
+
+    public cancel() {
+        this.action = "list";
+    }
+
+    public create(annonce: Annonce) 
     {
-      this.annonces.update(annonce.id, annonce); 
+        if (this.createForm.valid) 
+        {
+            annonce.userId = this.userService.user.uid;
+            annonce.userMail = this.userService.user.email;
+
+            if (!annonce.id) 
+            {
+                this.annonces.push(annonce);
+            }
+            else 
+            {
+                this.annonces.update(annonce.id, annonce);
+            }
+            this.action = "list";
+            this.refreshList();
+        }else{
+            this.submitAttempt=true;
+        }
     }
-    this.action = "list";
-    this.refreshList();
-  }
 
-  public edit(annonce: Annonce) {
-    this.createForm = this.formBuilder.group({
-      'id': [annonce.$key],
-      'type': [annonce.type, Validators.required],
-      'title': [annonce.title, Validators.required],
-      'description': [annonce.description, Validators.required]
-    });
+    public edit(annonce: Annonce) 
+    {
+        if (annonce.userId == this.userService.user.uid) 
+        {
+            this.createForm = this.formBuilder.group({
+                'id': [annonce.$key],
+                'type': [annonce.type, Validators.required],
+                'title': [annonce.title, Validators.required],
+                'description': [annonce.description, Validators.required]
+            });
 
-    this.action = "create";
-  }
-
-  // ngOnInit(){
-  //   this.auth.subscribe((data)=>{
-  //     if (data) {
-  //       this.annonces = this.af.database.list('/annonces')
-  //       this.userImage = data.auth.photoURL
-  //     }
-  //   })
-  // }
+            this.action = "create";
+            
+        }
+        else
+        {
+            this.nav.push(AnnonceDetailPage, annonce);
+        }
+    }
+ 
+    public delete(annonce : Annonce)
+    {
+         this.annonces.remove(annonce);
+    }
 }

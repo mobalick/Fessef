@@ -14,32 +14,40 @@ import {NotificationService} from './providers/notification-service/notification
   template: `
     <ion-menu [content]="content">
       <ion-toolbar>
-        <ion-title>Fessef</ion-title>
+        <ion-title>Menu</ion-title>
       </ion-toolbar>
       <ion-content>
         <ion-list>
+          <ion-list-header>
+             Navigate
+          </ion-list-header>
+          
           <button ion-item (click)="openPage(homePage)">
-            <ion-icon name="home"></ion-icon>
+            <ion-icon  item-left name="home"></ion-icon>
             Home
           </button>
 
           <button ion-item (click)="openPage(infoPage)">
-            <ion-icon name="information-circle"></ion-icon>
+            <ion-icon  item-left name="information-circle"></ion-icon>
             Info
           </button>
 
           <button ion-item (click)="openPage(annoncesPage)">
-            <ion-icon name="megaphone"></ion-icon>
+            <ion-icon  item-left name="megaphone"></ion-icon>
             Annonces
           </button>
           
           <button ion-item (click)="openPage(agendaPage)">
-            <ion-icon name="calendar"></ion-icon>
+            <ion-icon  item-left name="calendar"></ion-icon>
             Agenda
           </button>
-
+        </ion-list>
+        <ion-list>
+          <ion-list-header>
+             Account
+          </ion-list-header>
           <button ion-item (click)="openPage(loginPage)">
-            <ion-icon name="contact"></ion-icon>
+            <ion-icon  item-left name="contact"></ion-icon>
             Deconnection
           </button>
 

@@ -7,8 +7,8 @@
 <ion-navbar *navbar hideBackButton>
 
     <button menuToggle>
-    <ion-icon name='menu'></ion-icon>
-  </button>
+        <ion-icon name='menu'></ion-icon>
+    </button>
 
     <ion-title>
         Annonces
@@ -29,17 +29,26 @@
                     <ion-option value="vente">vente</ion-option>
                 </ion-select>
             </ion-item>
-
+            <ion-item *ngIf="!createForm.controls.type.valid  && (submitAttempt || createForm.controls.type.touched)" >
+                <p  class="invalid">Please select a type.</p>
+            </ion-item>
+            
             <ion-item>
                 <ion-label floating>Titre</ion-label>
                 <ion-input type="text" [(ngFormControl)]="createForm.controls['title']"></ion-input>
             </ion-item>
-
+            <ion-item *ngIf="!createForm.controls.title.valid  && (submitAttempt || createForm.controls.title.touched)" >
+                <p  class="invalid">Please enter a title.</p>
+            </ion-item>
+            
             <ion-item>
                 <ion-label floating>Description</ion-label>
                 <ion-textarea [(ngFormControl)]="createForm.controls['description']"></ion-textarea>
             </ion-item>
-
+            <ion-item *ngIf="!createForm.controls.description.valid  && (submitAttempt || createForm.controls.description.touched)" >
+                <p  class="invalid">Please enter a description.</p>
+            </ion-item>
+            
             <div padding>
                 <button type="button" (click)="cancel()">Annuler</button>
                 <button type="submit">Enregistrer</button>
@@ -49,19 +58,21 @@
         <ion-list *ngSwitchWhen="'list'">
             <ion-item-sliding *ngFor="let item of annonces | async">
                 <button ion-item (click)="edit(item)">
-              <ion-item-content>
-                <h2>{{item.title}}</h2>
-                <p>{{item.description | truncate: 40}}</p>
-              </ion-item-content>
-            </button>
+                    <ion-item-content>
+                        <h2>{{item.title}}</h2>
+                        <p>{{item.description | truncate: 40}}</p>
+                    </ion-item-content>
+                </button>
 
                 <ion-item-options>
-                    <button danger (click)="removeNote(item)"><ion-icon name="trash"></ion-icon> Delete</button>
+                    <button danger (click)="delete(item)">
+                        <ion-icon name="trash"></ion-icon> Delete</button>
                 </ion-item-options>
             </ion-item-sliding>
             <button class="round-overlay-button bottom-right positive light" (click)="add()">
-            <ion-icon name="add"></ion-icon>
-          </button>
+                <ion-icon name="add"></ion-icon>
+            </button>
         </ion-list>
-    </div>
+
+       </div>
 </ion-content>
