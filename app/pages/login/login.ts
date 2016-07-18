@@ -38,19 +38,19 @@ export class LoginPage {
         this.isAuthorized     = this.userService.IsAuthorized();
         
         this.loginForm        = formBuilder.group({
-        'email': ['', Validators.required],
-        'password': ['', Validators.required]
+            'email': ['', Validators.required],
+            'password': ['', Validators.required]
         });
     
         this.signupForm      = formBuilder.group({
-        'name'    : ['', Validators.required],
-        'lastName': ['', Validators.required],
-        'sex'     : ['m', Validators.required],
-        'email'   : ['', Validators.required],
-        'school'  : ['', Validators.required],
-        'city'    : ['', Validators.required],
-        'dob'     : ['', Validators.required],
-        'password': ['', Validators.required],
+            'name'    : ['', Validators.required],
+            'lastName': ['', Validators.required],
+            'sex'     : ['m', Validators.required],
+            'email'   : ['', Validators.required],
+            'school'  : [''],
+            'city'    : [''],
+            'dob'     : [''],
+            'password': ['', Validators.required],
         });
         
         
