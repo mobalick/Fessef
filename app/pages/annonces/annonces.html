@@ -4,18 +4,36 @@
   See http://ionicframework.com/docs/v2/components/#navigation for more info on
   Ionic pages and navigation.
 -->
-<ion-navbar *navbar hideBackButton>
+<ion-header>
+    <ion-navbar *navbar hideBackButton>
 
-    <button menuToggle>
-        <ion-icon name='menu'></ion-icon>
-    </button>
+        <button menuToggle>
+            <ion-icon name='menu'></ion-icon>
+        </button>
 
-    <ion-title>
-        Annonces
-    </ion-title>
+        <ion-segment [(ngModel)]="segment" (ionChange)="updateListMode()">
+        <ion-segment-button value="list">
+            Tous
+        </ion-segment-button>
+        <ion-segment-button value="favorites">
+            Favoris
+        </ion-segment-button>
+        </ion-segment>
+        <ion-buttons end>
+        <button (click)="presentFilter()">
+            <ion-icon ios="ios-options-outline" md="md-options"></ion-icon>
+        </button>
+        </ion-buttons>
+    </ion-navbar>
+    <ion-toolbar no-border-top>
+        <ion-searchbar primary
+                    [(ngModel)]="queryText"
+                    (ionInput)="updateSchedule()"
+                    placeholder="Rechercher">
+        </ion-searchbar>
+    </ion-toolbar>
+</ion-header>
 
-
-</ion-navbar>
 
 <ion-content padding class="annonces">
     <div [ngSwitch]="action">
@@ -58,6 +76,25 @@
         <ion-list *ngSwitchWhen="'list'">
             <ion-item-sliding *ngFor="let item of annonces | async">
                 <button ion-item (click)="edit(item)">
+                    <ion-item-content item-left>
+                        <h2>{{item.title}}</h2>
+                        <p>{{item.description | truncate: 40}}</p>
+                    </ion-item-content>
+                    <ion-icon name="star" item-right></ion-icon>                    
+                </button>
+                <ion-item-options>
+                    <button danger (click)="delete(item)">
+                        <ion-icon name="trash"></ion-icon> Delete
+                    </button>
+                </ion-item-options>
+            </ion-item-sliding>
+            <button class="round-overlay-button bottom-right positive light" (click)="add()">
+                <ion-icon name="add"></ion-icon>
+            </button>
+        </ion-list>
+        <ion-list *ngSwitchWhen="'favorites'">
+            <ion-item-sliding *ngFor="let item of favorites">
+                <button ion-item (click)="edit(item)">
                     <ion-item-content>
                         <h2>{{item.title}}</h2>
                         <p>{{item.description | truncate: 40}}</p>
@@ -73,6 +110,5 @@
                 <ion-icon name="add"></ion-icon>
             </button>
         </ion-list>
-
        </div>
 </ion-content>

@@ -27,14 +27,16 @@ export class AnnoncesPage {
     private userImage;
     private annonce : Annonce;
     private submitAttempt;
+    private segment;
+    private favorites : Annonce[];
     
     constructor(public nav: NavController, public formBuilder: FormBuilder,public auth : FirebaseAuth,
                 public annonceService: AnnonceService, public userService: UserService, public af : AngularFire) {
         this.action = "list";
 
         //this.refreshList();
-        this.annonces = this.af.database.list('/annonces');
-
+        this.annonces   = this.af.database.list('/annonces');
+        this.favorites  = JSON.parse(window.localStorage.getItem("annoncesFavorites")); 
 
     }
 
@@ -77,7 +79,7 @@ export class AnnoncesPage {
             this.action = "list";
             this.refreshList();
         }else{
-            this.submitAttempt=true;
+            this.submitAttempt = true;
         }
     }
 
@@ -105,4 +107,24 @@ export class AnnoncesPage {
     {
          this.annonces.remove(annonce);
     }
+    
+    public updateListMode()
+    {
+         this.action = this.segment;
+    }
+    
+    public addFavorite(annonce : Annonce)
+    {
+        this.favorites.push(annonce);
+        window.localStorage.setItem("annoncesFavorites", JSON.stringify(this.favorites));
+    }
+    
+    public removeFavorite(annonce : Annonce)
+    {
+        this.favorites = this.favorites.filter(function( obj ) {
+                                                    return obj.id !== annonce.id;
+                                                });
+        window.localStorage.setItem("annoncesFavorites", JSON.stringify(this.favorites));
+    }
+    
 }
