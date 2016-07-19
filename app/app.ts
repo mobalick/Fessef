@@ -58,7 +58,7 @@ import {NotificationService} from './providers/notification-service/notification
     <ion-nav id="nav" #content [root]="rootPage"></ion-nav>`
 })
 export class MyApp {
-  rootPage: any = this.userService.IsAuthorized()? HomePage : LoginPage;
+  rootPage: any = this.userService.IsAuthorized()? AnnoncesPage : LoginPage;
 
   private homePage      = HomePage;
   private infoPage      = InfoPage;

@@ -37,7 +37,9 @@ export class AnnoncesPage {
         //this.refreshList();
         this.annonces   = this.af.database.list('/annonces');
         this.favorites  = JSON.parse(window.localStorage.getItem("annoncesFavorites")); 
-
+        if (this.favorites==null) {
+            this.favorites = []
+        }
     }
 
     public refreshList() {
@@ -115,6 +117,8 @@ export class AnnoncesPage {
     
     public addFavorite(annonce : Annonce)
     {
+        this.removeFavorite(annonce);
+
         this.favorites.push(annonce);
         window.localStorage.setItem("annoncesFavorites", JSON.stringify(this.favorites));
     }
@@ -125,6 +129,14 @@ export class AnnoncesPage {
                                                     return obj.id !== annonce.id;
                                                 });
         window.localStorage.setItem("annoncesFavorites", JSON.stringify(this.favorites));
+    }
+
+    public IsInFavorite(annonce : Annonce)
+    {
+        let result= this.favorites.filter(function( obj ) {
+                                                    return obj.id === annonce.id;
+                                                });
+        return result.length>0;
     }
     
 }
