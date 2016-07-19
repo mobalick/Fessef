@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {NavController} from 'ionic-angular';
+import {NavController, Modal} from 'ionic-angular';
 import {Truncate} from '../../pipes/truncate';
 import {AnnonceService, Annonce} from '../../providers/annonce-service/annonce-service';
 import {FormBuilder, Validators, AbstractControl, ControlGroup } from '@angular/common';
@@ -27,12 +27,12 @@ export class AnnoncesPage {
     private userImage;
     private annonce : Annonce;
     private submitAttempt;
-    private segment;
+    private segment = "list";
     private favorites : Annonce[];
     
     constructor(public nav: NavController, public formBuilder: FormBuilder,public auth : FirebaseAuth,
                 public annonceService: AnnonceService, public userService: UserService, public af : AngularFire) {
-        this.action = "list";
+        this.action = this.segment;
 
         //this.refreshList();
         this.annonces   = this.af.database.list('/annonces');
@@ -60,7 +60,7 @@ export class AnnoncesPage {
     }
 
     public cancel() {
-        this.action = "list";
+        this.action = this.segment;
     }
 
     public create(annonce: Annonce) 
@@ -78,7 +78,7 @@ export class AnnoncesPage {
             {
                 this.annonces.update(annonce.id, annonce);
             }
-            this.action = "list";
+            this.action = this.segment;
             this.refreshList();
         }else{
             this.submitAttempt = true;
@@ -131,12 +131,17 @@ export class AnnoncesPage {
         window.localStorage.setItem("annoncesFavorites", JSON.stringify(this.favorites));
     }
 
-    public IsInFavorite(annonce : Annonce)
+    public isInFavorite(annonce : Annonce)
     {
         let result= this.favorites.filter(function( obj ) {
                                                     return obj.id === annonce.id;
                                                 });
         return result.length>0;
+    }
+
+    public isMine(annonce: Annonce)
+    {
+        return annonce.userId == this.userService.user.uid;
     }
     
 }

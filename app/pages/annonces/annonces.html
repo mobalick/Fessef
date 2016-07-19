@@ -75,13 +75,26 @@
                 <div ion-item>
                     <ion-item-content (click)="edit(item)">
                         <h2>{{item.title}}</h2>
+                        <h2>{{item.id}}</h2>
                         <p>{{item.description | truncate: 40}}</p>
                     </ion-item-content>
-                    <ion-icon name="star" (click)="addFavorite(item)" item-right *ngIf="IsInFavorite(item)"></ion-icon>
-                    <ion-icon name="star-outline" (click)="removeFavorite(item)" item-right *ngIf="!IsInFavorite(item)"></ion-icon>
+                    <ion-icon name="star-outline" (click)="addFavorite(item)" item-right *ngIf="!isInFavorite(item)"></ion-icon>
+                    <ion-icon name="star" (click)="removeFavorite(item)" item-right *ngIf="isInFavorite(item)"></ion-icon>
                 </div>
                 <ion-item-options>
-                    <button danger (click)="delete(item)">
+                    <button primary *ngIf="!isMine(item)">
+                        <ion-icon name="mail"></ion-icon>
+                        email
+                    </button>
+                    <button dark *ngIf="!isMine(item)">
+                        <ion-icon name="text"></ion-icon>
+                        SMS
+                    </button>
+                    <button secondary *ngIf="!isMine(item)">
+                        <ion-icon name="call"></ion-icon>
+                        Appel
+                    </button>
+                    <button danger (click)="delete(item)" *ngIf="isMine(item)">
                         <ion-icon name="trash"></ion-icon> Delete
                     </button>
                 </ion-item-options>
@@ -91,22 +104,16 @@
             </button>
         </ion-list>
         <ion-list *ngSwitchWhen="'favorites'">
-            <ion-item-sliding *ngFor="let item of favorites">
+            <div *ngFor="let item of favorites">
                 <button ion-item (click)="edit(item)">
-                    <ion-item-content>
                         <h2>{{item.title}}</h2>
                         <p>{{item.description | truncate: 40}}</p>
-                    </ion-item-content>
                 </button>
-
-                <ion-item-options>
-                    <button danger (click)="removeFavorite(item)">
-                        <ion-icon name="trash"></ion-icon> Delete</button>
-                </ion-item-options>
-            </ion-item-sliding>
-            <button class="round-overlay-button bottom-right positive light" (click)="add()">
-                <ion-icon name="add"></ion-icon>
-            </button>
+            </div>
         </ion-list>
+
+        <button class="round-overlay-button bottom-right positive light" (click)="add()">
+            <ion-icon name="add"></ion-icon>
+        </button>
     </div>
 </ion-content>
