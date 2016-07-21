@@ -1,12 +1,13 @@
 import {Component} from '@angular/core';
 import {NavController, Modal} from 'ionic-angular';
 import {Truncate} from '../../pipes/truncate';
+import {AnnonceSearch} from '../../pipes/AnnonceSearch';
 import {AnnonceService, Annonce} from '../../providers/annonce-service/annonce-service';
 import {FormBuilder, Validators, AbstractControl, ControlGroup } from '@angular/common';
 import {UserService, User} from '../../providers/user-service/user-service';
 import { AngularFire, FirebaseListObservable, FirebaseAuth} from 'angularfire2';
 import {AnnonceDetailPage} from '../annonce-detail/annonce-detail';
-
+import {Observable} from 'rxjs/Observable';
 
 /*
   Generated class for the AnnoncesPage page.
@@ -16,12 +17,12 @@ import {AnnonceDetailPage} from '../annonce-detail/annonce-detail';
 */
 @Component({
   templateUrl: 'build/pages/annonces/annonces.html',
-  pipes: [Truncate],
+  pipes: [Truncate, AnnonceSearch],
   providers: [AnnonceService]
 })
 
 export class AnnoncesPage {
-    private annonces : FirebaseListObservable<Annonce[]>;
+    private annonces : Observable<any[]>;
     private action;
     private createForm;
     private userImage;
@@ -29,12 +30,15 @@ export class AnnoncesPage {
     private submitAttempt;
     private segment = "list";
     private favorites : Annonce[];
-    
+    private queryText = "";
+
     constructor(public nav: NavController, public formBuilder: FormBuilder,public auth : FirebaseAuth,
                 public annonceService: AnnonceService, public userService: UserService, public af : AngularFire) {
         this.action = this.segment;
 
         //this.refreshList();
+;
+
         this.annonces   = this.af.database.list('/annonces');
         this.favorites  = JSON.parse(window.localStorage.getItem("annoncesFavorites")); 
         if (this.favorites==null) {
