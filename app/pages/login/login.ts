@@ -4,7 +4,6 @@ import {FormBuilder, Validators, AbstractControl, ControlGroup } from '@angular/
 import {UserService, User} from '../../providers/user-service/user-service';
 import {NotificationService} from '../../providers/notification-service/notification-service';
 import {HomePage} from '../home/home';
-import {FIREBASE_PROVIDERS, defaultFirebase,AngularFire, FirebaseAuth } from 'angularfire2';
 
 /*
   Generated class for the LoginPage page.
@@ -27,8 +26,7 @@ export class LoginPage {
     public storage = new Storage(LocalStorage);
 
     constructor(public nav: NavController, public userService : UserService, 
-                public formBuilder : FormBuilder, public notif : NotificationService,
-                public auth : FirebaseAuth ) {
+                public formBuilder : FormBuilder, public notif : NotificationService ) {
         
         this.authType         = 'login';  
         this.isLoginIncorrect = false;
@@ -62,23 +60,23 @@ export class LoginPage {
         
         this.notif.showLoading(this.nav);
         
-        this.userService.login(login).then((authData)=>{
-        this.notif.closeLoading();
+         this.userService.login(login).then((authData)=>{
+         this.notif.closeLoading();
         
-        this.userService.get(authData.uid).subscribe(user =>{
-            this.userService.user             = user;
-            this.userService.user.isLogedIn   = true;
-            this.isAuthorized                 = true;
-            this.user                         = this.userService.user;
+        //  this.userService.login(authData.uid).then(user =>{
+        //      this.userService.user             = user;
+        //      this.userService.user.isLogedIn   = true;
+        //      this.isAuthorized                 = true;
+        //      this.user                         = this.userService.user;
 
-            this.storage.setJson('user', user);
+        //      this.storage.setJson('user', user);
             
-            this.nav.setRoot(HomePage);
-        });
+        //      this.nav.setRoot(HomePage);
+        //  });
             
-        }).catch((error)=>{
-        this.notif.showError(error,this.nav);
-        this.isLoginIncorrect   = true;
+         }).catch((error)=>{
+         this.notif.showError(error,this.nav);
+         this.isLoginIncorrect   = true;
         })
     }
 
@@ -100,21 +98,21 @@ export class LoginPage {
 
         this.notif.showLoading(this.nav);
 
-        this.userService.create(user).then((authdata)=>{
-            console.log("create ok"+authdata);
-            this.notif.closeLoading();
-            this.authType = 'login';
+         this.userService.register(user).then((authdata)=>{
+             console.log("create ok"+authdata);
+             this.notif.closeLoading();
+             this.authType = 'login';
         
-        //Save the object
-        user.uid = authdata.uid;
-        this.userService.save(user);
+         //Save the object
+         user.uid = authdata.uid;
+         this.userService.saveOrUpdate(user);
 
 
-        }).catch((error)=>{
-            console.log(error);
-            this.notif.showError(error.message,this.nav);
-            this.authType = 'signup';
-        });
+         }).catch((error)=>{
+             console.log(error);
+             this.notif.showError(error.message,this.nav);
+             this.authType = 'signup';
+         });
         
         
         }

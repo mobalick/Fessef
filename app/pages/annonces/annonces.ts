@@ -5,9 +5,7 @@ import {AnnonceSearch} from '../../pipes/AnnonceSearch';
 import {AnnonceService, Annonce} from '../../providers/annonce-service/annonce-service';
 import {FormBuilder, Validators, AbstractControl, ControlGroup } from '@angular/common';
 import {UserService, User} from '../../providers/user-service/user-service';
-import { AngularFire, FirebaseListObservable, FirebaseAuth} from 'angularfire2';
 import {AnnonceDetailPage} from '../annonce-detail/annonce-detail';
-import {Observable} from 'rxjs/Observable';
 
 /*
   Generated class for the AnnoncesPage page.
@@ -22,7 +20,7 @@ import {Observable} from 'rxjs/Observable';
 })
 
 export class AnnoncesPage {
-    private annonces : Observable<any[]>;
+    private annonces;
     private action;
     private createForm;
     private userImage;
@@ -32,24 +30,23 @@ export class AnnoncesPage {
     private favorites : Annonce[];
     private queryText = "";
 
-    constructor(public nav: NavController, public formBuilder: FormBuilder,public auth : FirebaseAuth,
-                public annonceService: AnnonceService, public userService: UserService, public af : AngularFire) {
+    constructor(public nav: NavController, public formBuilder: FormBuilder, public annonceService: AnnonceService, public userService: UserService) {
         this.action = this.segment;
 
-        //this.refreshList();
-;
+        this.refreshList();
 
-        this.annonces   = this.af.database.list('/annonces');
+    }
+
+    public refreshList() {
+
+        // this.annonceService.getAll().then(a => {
+        //     this.annonces  = a;
+        // }); 
+
         this.favorites  = JSON.parse(window.localStorage.getItem("annoncesFavorites")); 
         if (this.favorites==null) {
             this.favorites = []
         }
-    }
-
-    public refreshList() {
-        // this.annonceService.getAll().then(ans => {
-        //   this.annonces = ans === '' ? null : ans.res.rows;
-        // });
     }
 
     public add() {
