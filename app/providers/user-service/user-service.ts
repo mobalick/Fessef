@@ -68,21 +68,28 @@ export class UserService {
       };
 
     this.superlogin.configure(config);
-
+    if (!this.superlogin.authenticated()) {
+      var credentials = JSON.parse(window.localStorage.getItem("credentials"));
+      if ( credentials != null ) {
+        this.login(credentials);
+      }
+    }
   }
   
   public IsAuthorized(){
-     if (this.user == null) {
+    //  if (this.user == null) {
 
-      this.user = JSON.parse(window.localStorage.getItem("user"));
+    //   this.user = JSON.parse(window.localStorage.getItem("user"));
 
-      //Si un user est trouvé connecté il faut le connecter a firebase
-      if (this.user!=null && this.user.isLogedIn) {
-        this.login(this.user);
-      }
-     }
+    //   //Si un user est trouvé connecté il faut le connecter a firebase
+    //   if (this.user!=null && this.user.isLogedIn) {
+    //     this.login(this.user);
+    //   }
+    //  }
 
-    return this.user!=null && this.user.isLogedIn;
+    // return this.user!=null && this.user.isLogedIn;
+
+    return this.superlogin.authenticated();
   }
 
   // Get all notes of our DB
@@ -111,7 +118,7 @@ export class UserService {
 
   public login(user : User)
   {
-    var credentials= {username:user.email, password:user.password};
+    var credentials = {username:user.email, password:user.password};
     return this.superlogin.login(credentials);
   }
 
@@ -127,9 +134,14 @@ export class UserService {
     return this.superlogin.register(credentials);
   }
 
-   public logout()
+  public logout()
   {
     return this.superlogin.logout();
+  }
+
+  public getSession()
+  {
+    return this.superlogin.getSession();
   }
 
 }

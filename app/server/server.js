@@ -25,8 +25,8 @@ var config = {
     dbServer: {
         protocol: 'http://',
         host: 'localhost:5984',
-        user: '',
-        password: '',
+        user: 'root',
+        password: 'P@ssword1',
         userDB: 'sl-users',
         couchAuthDB: '_users'
     },
@@ -49,6 +49,7 @@ var config = {
     },
     userDBs: {
         defaultDBs: {
+            public: ['fessefdb_main'],
             private: ['fessefdb']
         }
     },

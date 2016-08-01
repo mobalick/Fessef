@@ -1,11 +1,12 @@
 import {Component} from '@angular/core';
-import {NavController, Modal} from 'ionic-angular';
+import {NavController, Modal, Events} from 'ionic-angular';
 import {Truncate} from '../../pipes/truncate';
 import {AnnonceSearch} from '../../pipes/AnnonceSearch';
 import {AnnonceService, Annonce} from '../../providers/annonce-service/annonce-service';
 import {FormBuilder, Validators, AbstractControl, ControlGroup } from '@angular/common';
 import {UserService, User} from '../../providers/user-service/user-service';
 import {AnnonceDetailPage} from '../annonce-detail/annonce-detail';
+import {AnnonceEditPage} from '../annonce-edit/annonce-edit';
 
 /*
   Generated class for the AnnoncesPage page.
@@ -15,8 +16,7 @@ import {AnnonceDetailPage} from '../annonce-detail/annonce-detail';
 */
 @Component({
   templateUrl: 'build/pages/annonces/annonces.html',
-  pipes: [Truncate, AnnonceSearch],
-  providers: [AnnonceService]
+  pipes: [Truncate, AnnonceSearch]
 })
 
 export class AnnoncesPage {
@@ -30,18 +30,21 @@ export class AnnoncesPage {
     private favorites : Annonce[];
     private queryText = "";
 
-    constructor(public nav: NavController, public formBuilder: FormBuilder, public annonceService: AnnonceService, public userService: UserService) {
+    constructor(public nav: NavController, public formBuilder: FormBuilder, public annonceService: AnnonceService, public userService: UserService, private events: Events) {
         this.action = this.segment;
 
-        this.refreshList();
+        this.events.subscribe('annonce:updated', () => {
+            this.refreshList();
+        });
 
+        this.refreshList();
     }
 
     public refreshList() {
 
-        // this.annonceService.getAll().then(a => {
-        //     this.annonces  = a;
-        // }); 
+        this.annonceService.getAll().then(a => {
+            this.annonces  = a.docs;
+        }); 
 
         this.favorites  = JSON.parse(window.localStorage.getItem("annoncesFavorites")); 
         if (this.favorites==null) {
@@ -50,60 +53,27 @@ export class AnnoncesPage {
     }
 
     public add() {
-        this.createForm = this.formBuilder.group({
-        'id': [''],
-        'type': ['', Validators.required],
-        'title': ['', Validators.required],
-        'description': ['', Validators.required]
-        });
-
-        this.action = "create";
+        this.nav.push(AnnonceEditPage);
     }
 
     public cancel() {
         this.action = this.segment;
     }
 
-    public create(annonce: Annonce) 
-    {
-        if (this.createForm.valid) 
-        {
-            annonce.userId = this.userService.user.uid;
-            annonce.userMail = this.userService.user.email;
-
-            if (!annonce.id) 
-            {
-                this.annonces.push(annonce);
-            }
-            else 
-            {
-                this.annonces.update(annonce.id, annonce);
-            }
-            this.action = this.segment;
-            this.refreshList();
-        }else{
-            this.submitAttempt = true;
-        }
-    }
+   
 
     public edit(annonce: Annonce) 
     {
-        if (annonce.userId == this.userService.user.uid) 
-        {
-            this.createForm = this.formBuilder.group({
-                'id': [annonce.$key],
-                'type': [annonce.type, Validators.required],
-                'title': [annonce.title, Validators.required],
-                'description': [annonce.description, Validators.required]
-            });
-
-            this.action = "create";
-            
-        }
-        else
-        {
-            this.nav.push(AnnonceDetailPage, annonce);
-        }
+         this.nav.push(AnnonceEditPage, annonce);
+         return;
+        // if (annonce.userId == this.userService.user.uid) 
+        // {
+        //    this.nav.push(AnnonceEditPage, annonce);
+        // }
+        // else
+        // {
+        //     this.nav.push(AnnonceDetailPage, annonce);
+        // }
     }
  
     public delete(annonce : Annonce)
@@ -127,7 +97,7 @@ export class AnnoncesPage {
     public removeFavorite(annonce : Annonce)
     {
         this.favorites = this.favorites.filter(function( obj ) {
-                                                    return obj.id !== annonce.id;
+                                                    return obj._id !== annonce._id;
                                                 });
         window.localStorage.setItem("annoncesFavorites", JSON.stringify(this.favorites));
     }
@@ -135,14 +105,15 @@ export class AnnoncesPage {
     public isInFavorite(annonce : Annonce)
     {
         let result= this.favorites.filter(function( obj ) {
-                                                    return obj.id === annonce.id;
+                                                    return obj._id === annonce._id;
                                                 });
         return result.length>0;
     }
 
     public isMine(annonce: Annonce)
     {
-        return annonce.userId == this.userService.user.uid;
+        return true;
+        //return annonce.userId == this.userService.user.uid;
     }
     
 }

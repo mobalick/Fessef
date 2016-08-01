@@ -7,6 +7,7 @@ import {AnnoncesPage} from './pages/annonces/annonces';
 import {AgendaPage} from './pages/agenda/agenda';
 import {LoginPage} from './pages/login/login';
 import {UserService, User} from './providers/user-service/user-service';
+import {AnnonceService, Annonce} from './providers/annonce-service/annonce-service';
 import {NotificationService} from './providers/notification-service/notification-service';
 
 @Component({
@@ -84,4 +85,4 @@ export class MyApp {
   }
 }
 
-ionicBootstrap(MyApp, [UserService, NotificationService]);
+ionicBootstrap(MyApp, [UserService, AnnonceService, NotificationService]);

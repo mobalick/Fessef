@@ -34,44 +34,10 @@
 
 <ion-content padding class="annonces">
     <div [ngSwitch]="action">
-        <form *ngSwitchWhen="'create'" [ngFormModel]="createForm" (ngSubmit)="create(createForm.value)">
-            <input type="hidden" [(ngFormControl)]="createForm.controls['id']" />
-            <ion-item>
-                <ion-label floating>type</ion-label>
-                <ion-select [(ngFormControl)]="createForm.controls['type']">
-                    <ion-option value="Collocation">Logement</ion-option>
-                    <ion-option value="Recherche">Recherche</ion-option>
-                    <ion-option value="vente">vente</ion-option>
-                </ion-select>
-            </ion-item>
-            <ion-item *ngIf="!createForm.controls.type.valid  && (submitAttempt || createForm.controls.type.touched)">
-                <p class="invalid">Please select a type.</p>
-            </ion-item>
 
-            <ion-item>
-                <ion-label floating>Titre</ion-label>
-                <ion-input type="text" [(ngFormControl)]="createForm.controls['title']"></ion-input>
-            </ion-item>
-            <ion-item *ngIf="!createForm.controls.title.valid  && (submitAttempt || createForm.controls.title.touched)">
-                <p class="invalid">Please enter a title.</p>
-            </ion-item>
-
-            <ion-item>
-                <ion-label floating>Description</ion-label>
-                <ion-textarea [(ngFormControl)]="createForm.controls['description']"></ion-textarea>
-            </ion-item>
-            <ion-item *ngIf="!createForm.controls.description.valid  && (submitAttempt || createForm.controls.description.touched)">
-                <p class="invalid">Please enter a description.</p>
-            </ion-item>
-
-            <div padding>
-                <button type="button" (click)="cancel()">Annuler</button>
-                <button type="submit">Enregistrer</button>
-            </div>
-        </form>
 
         <ion-list *ngSwitchWhen="'list'">
-            <ion-item-sliding *ngFor="let item of annonces | async | annonceSearch:queryText">
+            <ion-item-sliding *ngFor="let item of annonces | annonceSearch:queryText">
                 <div ion-item>
                     <ion-item-content (click)="edit(item)">
                         <h2>{{item.title}}</h2>

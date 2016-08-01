@@ -6,7 +6,6 @@ import {User} from '../../providers/user-service/user-service';
 
 @Component({
   templateUrl: 'build/pages/home/home.html',
-  providers:[UserService]
 })
 export class HomePage {
   public user:User;

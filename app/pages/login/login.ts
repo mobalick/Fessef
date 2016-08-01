@@ -36,7 +36,7 @@ export class LoginPage {
         this.isAuthorized     = this.userService.IsAuthorized();
         
         this.loginForm        = formBuilder.group({
-            'email': ['', Validators.required],
+            'email'   : ['', Validators.required],
             'password': ['', Validators.required]
         });
     
@@ -61,22 +61,14 @@ export class LoginPage {
         this.notif.showLoading(this.nav);
         
          this.userService.login(login).then((authData)=>{
-         this.notif.closeLoading();
-        
-        //  this.userService.login(authData.uid).then(user =>{
-        //      this.userService.user             = user;
-        //      this.userService.user.isLogedIn   = true;
-        //      this.isAuthorized                 = true;
-        //      this.user                         = this.userService.user;
+            this.notif.closeLoading();
+            this.nav.setRoot(HomePage);
 
-        //      this.storage.setJson('user', user);
-            
-        //      this.nav.setRoot(HomePage);
-        //  });
-            
+            window.localStorage.setItem("credentials", JSON.stringify(login));    
+
          }).catch((error)=>{
-         this.notif.showError(error,this.nav);
-         this.isLoginIncorrect   = true;
+            this.notif.showError(error,this.nav);
+            this.isLoginIncorrect   = true;
         })
     }
 

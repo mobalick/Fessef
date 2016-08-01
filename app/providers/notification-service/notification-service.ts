@@ -1,6 +1,6 @@
 import {Injectable, Inject, Component} from '@angular/core';
 import {NavController, Alert, Loading} from 'ionic-angular';
-
+import * as PouchDB from 'pouchdb';
 /*
   Generated class for the NotificationService provider.
 

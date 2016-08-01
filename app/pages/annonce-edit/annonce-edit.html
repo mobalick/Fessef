@@ -1,0 +1,48 @@
+<!--
+  Generated template for the AnnonceEditPage page.
+
+  See http://ionicframework.com/docs/v2/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-navbar *navbar>
+    <ion-title>annonceEdit</ion-title>
+</ion-navbar>
+
+<ion-content padding class="annonce-edit">
+    <form [ngFormModel]="form" (ngSubmit)="saveOrUpdate(form.value)">
+        <input type="hidden" [(ngFormControl)]="form.controls['_id']" />
+        <input type="hidden" [(ngFormControl)]="form.controls['_rev']" />
+        <ion-item>
+            <ion-label floating>type</ion-label>
+            <ion-select [(ngFormControl)]="form.controls['type']">
+                <ion-option value="Collocation">Logement</ion-option>
+                <ion-option value="Recherche">Recherche</ion-option>
+                <ion-option value="vente">vente</ion-option>
+            </ion-select>
+        </ion-item>
+        <ion-item *ngIf="!form.controls.type.valid  && (submitAttempt || form.controls.type.touched)">
+            <p class="invalid">Please select a type.</p>
+        </ion-item>
+
+        <ion-item>
+            <ion-label floating>Titre</ion-label>
+            <ion-input type="text" [(ngFormControl)]="form.controls['title']"></ion-input>
+        </ion-item>
+        <ion-item *ngIf="!form.controls.title.valid  && (submitAttempt || form.controls.title.touched)">
+            <p class="invalid">Please enter a title.</p>
+        </ion-item>
+
+        <ion-item>
+            <ion-label floating>Description</ion-label>
+            <ion-textarea [(ngFormControl)]="form.controls['description']"></ion-textarea>
+        </ion-item>
+        <ion-item *ngIf="!form.controls.description.valid  && (submitAttempt || form.controls.description.touched)">
+            <p class="invalid">Please enter a description.</p>
+        </ion-item>
+
+        <div padding>
+            <button type="button" (click)="cancel()">Annuler</button>
+            <button type="submit">Enregistrer</button>
+        </div>
+    </form>
+</ion-content>
