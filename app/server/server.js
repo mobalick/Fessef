@@ -28,7 +28,7 @@ var config = {
         user: 'root',
         password: 'P@ssword1',
         userDB: 'sl-users',
-        couchAuthDB: '_users'
+        couchAuthDB: '_users',
     },
     mailer: {
         fromEmail: 'gmail.user@gmail.com',
@@ -49,8 +49,8 @@ var config = {
     },
     userDBs: {
         defaultDBs: {
-            public: ['fessefdb_main'],
-            private: ['fessefdb']
+            shared: ['fessefdb_main'],
+            //private: ['fessefdb']
         }
     },
     providers: {

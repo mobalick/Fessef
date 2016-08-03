@@ -86,6 +86,14 @@ export class AnnoncesPage {
          this.action = this.segment;
     }
     
+    public onQuery($event)
+    {
+        console.log("event", $event);
+        this.annonceService.query($event.value).then(result=>{
+            this.annonces=result.docs;
+        })
+    }
+
     public addFavorite(annonce : Annonce)
     {
         this.removeFavorite(annonce);

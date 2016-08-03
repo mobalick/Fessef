@@ -39,6 +39,7 @@ export class AnnonceService {
   remote: any;
   constructor(public userService: UserService, private events: Events) {
     this.db = new PouchDB('fessef');
+    window["PouchDB"] = PouchDB;
 
     PouchDB.plugin(require('pouchdb-find'));
     
@@ -78,7 +79,24 @@ export class AnnonceService {
   }
 
    public getAll() {
-    return this.db.find({selector:{"className": "Annonce"}});
+    return this.db.find({selector:{"className": "Annonce"}, limit : 50, sort: [{_id: 'desc'}]});
+  }
+
+  public query(value:string)
+  {
+    return this.db.find({
+            selector: {
+              $and:[
+                {className      : "Annonce"},
+                {$or: [
+                  {"description": { $regex: new RegExp(value,"i") }},
+                  {"title"      : { $regex: new RegExp(value,"i") }}
+                ]}
+              ]
+            },
+            limit : 50, sort: [{_id: 'desc'}]
+          });
+
   }
 
    // Save a new note to the DB
@@ -86,7 +104,6 @@ export class AnnonceService {
      annonce.className = "Annonce";
      if (annonce._id == null) {
         annonce._id = new Date().toISOString();
-        
      }
 
      let that = this;

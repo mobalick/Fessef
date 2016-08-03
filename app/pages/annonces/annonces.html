@@ -26,7 +26,7 @@
         </ion-buttons>
     </ion-navbar>
     <ion-toolbar no-border-top>
-        <ion-searchbar primary [(ngModel)]="queryText" placeholder="Rechercher">
+        <ion-searchbar primary (ionInput)="onQuery($event)" placeholder="Rechercher">
         </ion-searchbar>
     </ion-toolbar>
 </ion-header>
@@ -37,7 +37,7 @@
 
 
         <ion-list *ngSwitchWhen="'list'">
-            <ion-item-sliding *ngFor="let item of annonces | annonceSearch:queryText">
+            <ion-item-sliding *ngFor="let item of annonces">
                 <div ion-item>
                     <ion-item-content (click)="edit(item)">
                         <h2>{{item.title}}</h2>
