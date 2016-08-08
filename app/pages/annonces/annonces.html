@@ -40,8 +40,8 @@
             <ion-item-sliding *ngFor="let item of annonces">
                 <div ion-item>
                     <ion-item-content (click)="edit(item)">
+                        <h2>{{item.type}}</h2>
                         <h2>{{item.title}}</h2>
-                        <h2>{{item.id}}</h2>
                         <p>{{item.description | truncate: 40}}</p>
                     </ion-item-content>
                     <ion-icon name="star-outline" (click)="addFavorite(item)" item-right *ngIf="!isInFavorite(item)"></ion-icon>

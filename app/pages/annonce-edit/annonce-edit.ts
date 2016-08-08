@@ -19,26 +19,25 @@ export class AnnonceEditPage {
   private annonce: Annonce;
   public form;
   private submitAttempt;
+  private title;
+
   constructor(public nav: NavController, private navParams: NavParams, public formBuilder: FormBuilder, public userService: UserService, public annonceService: AnnonceService) {
     this.annonce = navParams.data;
 
-    if (this.annonce == null) {
-        this.form = this.formBuilder.group({
-        '_id': [''],
-        'type': ['', Validators.required],
-        'title': ['', Validators.required],
-        'description': ['', Validators.required]
-        });
+    if (this.annonce._id == null) {
+        this.title="Création d'une annonce";
     }
     else {
-      this.form = this.formBuilder.group({
+      this.title="Modification d'une annonce";
+    }
+    
+     this.form = this.formBuilder.group({
         '_id': [this.annonce._id],
         '_rev': [this.annonce._rev],
         'type': [this.annonce.type, Validators.required],
         'title': [this.annonce.title, Validators.required],
         'description': [this.annonce.description, Validators.required]
       });
-    }
 
   }
 

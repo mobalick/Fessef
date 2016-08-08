@@ -19,12 +19,12 @@ import {NotificationService} from './providers/notification-service/notification
       <ion-content>
         <ion-list>
           <ion-list-header>
-             Navigate
+             Navigation
           </ion-list-header>
           
           <button ion-item (click)="openPage(homePage)">
             <ion-icon  item-left name="home"></ion-icon>
-            Home
+            Accueil
           </button>
 
           <button ion-item (click)="openPage(infoPage)">

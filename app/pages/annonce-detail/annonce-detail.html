@@ -5,18 +5,29 @@
   Ionic pages and navigation.
 -->
 <ion-header>
-  <ion-navbar>
-    <ion-title>Session</ion-title>
-  </ion-navbar>
+    <ion-navbar>
+        <ion-title>Consultation annonce</ion-title>
+    </ion-navbar>
 </ion-header>
 
 <ion-content padding>
-  <h4>{{annonce.type}}</h4>
-    
-  <h1>{{annonce.title}}</h1>
+    <h4>{{annonce.type}}</h4>
 
-  <h4>{{annonce.description}}</h4>
+    <h1>{{annonce.title}}</h1>
 
-  <p>{{annonce.userId}}</p>
+    <h4>{{annonce.description}}</h4>
 
+    <p>{{annonce.userId}}</p>
+
+    <ion-item>
+        <button (click)="goToSpeakerTwitter(speaker)" clear item-right>
+         <ion-icon name="mail"></ion-icon> email
+        </button>
+        <button (click)="openSpeakerShare(speaker)" clear item-right>
+        <ion-icon name="text"></ion-icon> SMS
+        </button>
+        <button (click)="openSpeakerShare(speaker)" clear item-right>
+        <ion-icon name="call"></ion-icon> Appel
+        </button>
+    </ion-item>
 </ion-content>

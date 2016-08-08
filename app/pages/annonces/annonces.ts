@@ -64,16 +64,14 @@ export class AnnoncesPage {
 
     public edit(annonce: Annonce) 
     {
-         this.nav.push(AnnonceEditPage, annonce);
-         return;
-        // if (annonce.userId == this.userService.user.uid) 
-        // {
-        //    this.nav.push(AnnonceEditPage, annonce);
-        // }
-        // else
-        // {
-        //     this.nav.push(AnnonceDetailPage, annonce);
-        // }
+         if (this.isMine(annonce)) 
+         {
+            this.nav.push(AnnonceEditPage, annonce);
+         }
+         else
+         {
+             this.nav.push(AnnonceDetailPage, annonce);
+         }
     }
  
     public delete(annonce : Annonce)
@@ -120,7 +118,7 @@ export class AnnoncesPage {
 
     public isMine(annonce: Annonce)
     {
-        return true;
+        return false;
         //return annonce.userId == this.userService.user.uid;
     }
     

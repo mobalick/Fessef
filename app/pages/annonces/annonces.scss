@@ -21,13 +21,14 @@
     $floating-button-small-size: 40px;
 
     .round-overlay-button {
-        position: absolute;
+        position: fixed;
         height: $floating-button-size;
         width: $floating-button-size;
         border-radius: 50%;
         min-height: $floating-button-size;
         padding: 0;
         border: none;
+        
 
         background-color: $energized;
         color: white;

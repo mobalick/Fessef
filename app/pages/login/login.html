@@ -25,12 +25,12 @@
                 <p class="invalid">Login informations are incorrect</p>
             </ion-item>
             <ion-item>
-                <ion-label>Mail</ion-label>
+                <ion-label>E-Mail</ion-label>
                 <ion-input type="text" ngControl="email"></ion-input>
             </ion-item>
 
             <ion-item>
-                <ion-label>Password</ion-label>
+                <ion-label>Mot de passe</ion-label>
                 <ion-input type="password" ngControl="password"></ion-input>
             </ion-item>
 
@@ -42,15 +42,15 @@
 
         <form *ngSwitchWhen="'signup'" [ngFormModel]="signupForm" (ngSubmit)="signup(signupForm.value)">
             <ion-item>
-                <ion-label floating>Gender</ion-label>
-                <ion-select [(ngFormControl)]="signupForm.controls['sex']">
+                <ion-label floating>Sexe</ion-label>
+                <ion-select [(ngFormControl)]="signupForm.controls['sex']" placeholder="toto">
                     <ion-option value="f">Female</ion-option>
                     <ion-option value="m">Male</ion-option>
                 </ion-select>
             </ion-item>
 
             <ion-item>
-                <ion-label floating>Name</ion-label>
+                <ion-label floating>Prénom</ion-label>
                 <ion-input type="text" [ngFormControl]="signupForm.controls['name']"></ion-input>
             </ion-item>
             <ion-item *ngIf="!signupForm.controls.name.valid  && (submitAttempt || signupForm.controls.name.touched)">
@@ -58,7 +58,7 @@
             </ion-item>
 
             <ion-item>
-                <ion-label floating>LastName</ion-label>
+                <ion-label floating>Nom</ion-label>
                 <ion-input type="text" [ngFormControl]="signupForm.controls['lastName']"></ion-input>
             </ion-item>
             <ion-item *ngIf="!signupForm.controls.lastName.valid  && (submitAttempt || signupForm.controls.lastName.touched)">
@@ -66,7 +66,7 @@
             </ion-item>
 
             <ion-item>
-                <ion-label floating>Mail</ion-label>
+                <ion-label floating>E-Mail</ion-label>
                 <ion-input type="email" [ngFormControl]="signupForm.controls['email']"></ion-input>
             </ion-item>
             <ion-item *ngIf="!signupForm.controls.email.valid  && (submitAttempt || signupForm.controls.email.touched)">
@@ -74,7 +74,7 @@
             </ion-item>
 
             <ion-item>
-                <ion-label floating>Password</ion-label>
+                <ion-label floating>Mot de passe</ion-label>
                 <ion-input type="password" [ngFormControl]="signupForm.controls['password']"></ion-input>
             </ion-item>
             <ion-item *ngIf="!signupForm.controls.password.valid  && (submitAttempt || signupForm.controls.password.touched)">
@@ -83,7 +83,7 @@
 
 
             <ion-item>
-                <ion-label floating>School Name</ion-label>
+                <ion-label floating>Ecole</ion-label>
                 <ion-input type="text" [ngFormControl]="signupForm.controls['school']"></ion-input>
             </ion-item>
             <ion-item *ngIf="!signupForm.controls.school.valid  && (submitAttempt || signupForm.controls.school.touched)">
@@ -91,7 +91,7 @@
             </ion-item>
 
             <ion-item>
-                <ion-label floating>City Name</ion-label>
+                <ion-label floating>Ville</ion-label>
                 <ion-input type="text" [ngFormControl]="signupForm.controls['city']"></ion-input>
             </ion-item>
             <ion-item *ngIf="!signupForm.controls.city.valid  && (submitAttempt || signupForm.controls.city.touched)">
@@ -99,7 +99,7 @@
             </ion-item>
 
             <ion-item>
-                <ion-label floating class="toto">Date of birth</ion-label>
+                <ion-label floating class="toto">Date de naissance</ion-label>
                 <ion-datetime displayFormat="DD MMM YYYY" [ngFormControl]="signupForm.controls['dob']"></ion-datetime>
             </ion-item>
             <ion-item *ngIf="!signupForm.controls.dob.valid  && (submitAttempt || signupForm.controls.dob.touched)">

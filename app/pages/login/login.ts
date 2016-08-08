@@ -43,7 +43,7 @@ export class LoginPage {
         this.signupForm      = formBuilder.group({
             'name'    : ['', Validators.required],
             'lastName': ['', Validators.required],
-            'sex'     : ['m', Validators.required],
+            'sex'     : ['', Validators.required],
             'email'   : ['', Validators.required],
             'school'  : [''],
             'city'    : [''],
